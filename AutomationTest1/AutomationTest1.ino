@@ -6,9 +6,10 @@
 #include <ESPAsyncWebServer.h>
 
 
-int ModeAddr = 0;  // first addres of eeprom
-int ssidAddr = 1;
-int passAddr = 101;
+const int ModeAddr = 0;  // first addres of eeprom
+const int ssidAddr = 1;
+const int passAddr = 101;
+const int hotspotPin = 15;   // pin D8
 
 const char *hotspotSSID = "AutomationTest1";
 const char *hotspotPass = "password";
@@ -160,8 +161,20 @@ void hotspotSetup()
   server.begin();
 
 }
- void setup()
+
+// interrupt handler for setting mode to hotspot mode
+void ICACHE_RAM_ATTR intrHandler()
 {
+  //    Serial.println("INTERRUPT CALLED");
+  EEPROM.write(ModeAddr, 0);
+  EEPROM.commit();
+  ESP.restart();
+}
+
+void setup()
+{
+  pinMode(hotspotPin, INPUT);
+  attachInterrupt(digitalPinToInterrupt(hotspotPin), intrHandler, RISING);
   EEPROM.begin(512);
   Serial.begin(115200);
   int result = EEPROM.read(ModeAddr);
@@ -180,6 +193,7 @@ void hotspotSetup()
 void loop()
 {
   //handleRoot();
+  //    Serial.println("PINMODE: " + String(digitalRead(hotspotPin)));
 }
 
 /*
