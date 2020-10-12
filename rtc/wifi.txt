@@ -43,15 +43,22 @@ const char *PARAM_LED1 = "led1";
 const char *PARAM_LED2 = "led2";
 const char *PARAM_LED3 = "led3";
 
+void notFound(AsyncWebServerRequest *request) {
+  request->send(404, "text/plain", "Not found");
+}
+
+
 /******************* wifi mode initial setup **************************/
 void wifiSetup()
 {
   Serial.begin(115200);
   Serial.println("");
+/*
   ssid = eepromRead(ssidAddr);
   password = eepromRead(passAddr);
   Serial.println("ssid: " + ssid);
   Serial.println("password: " + password);
+  */
   WiFi.begin(ssid, password);
   
   Serial.print("Connecting ");
@@ -64,7 +71,7 @@ void wifiSetup()
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
-  String dns = getDNS();
+  String dns = "mylocaldns";
   if(MDNS.begin(dns)){
     Serial.println("DNS has started, Please connect to " + dns + ".local");
     MDNS.addService("http", "tcp", 80);
@@ -77,6 +84,8 @@ void wifiSetup()
   });
   
   server.on("/setHotspotMode", HTTP_GET, [] (AsyncWebServerRequest *request) {
+	
+	/*  
     EEPROM.write(ModeAddr, 0);
     EEPROM.commit();
     Serial.println("Written 0 to ModeAddr");
@@ -87,6 +96,7 @@ void wifiSetup()
     Serial.println("Restarting esp....");
     delay(5000);
     ESP.restart();
+	*/
   });
 
    // Send a GET request to <ESP_IP>/get?input1=<inputMessage>
