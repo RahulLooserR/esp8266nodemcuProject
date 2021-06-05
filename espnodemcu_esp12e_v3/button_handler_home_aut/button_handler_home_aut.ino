@@ -14,7 +14,7 @@ void setup()
 
 void loop()
 {
-	for(int i = 0; i < N; i++){
+	for(uint8_t i = 0; i < N; i++){
 		buttons[i]->check();
 	}
 	ir_remote();

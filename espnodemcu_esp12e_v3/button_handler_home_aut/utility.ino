@@ -5,7 +5,7 @@ void ir_remote()
 	if (irrecv.decode(&results))
 	{
 		//PRINTLN(results.value, HEX);
-		for (int i = 0; i < N; i++)
+		for (uint8_t i = 0; i < N; i++)
 		{
 			if (remoteBtns[i] == results.value)
 			{
@@ -17,7 +17,7 @@ void ir_remote()
 	}
 }
 
-void relayOnOff(int relay_no)
+void relayOnOff(uint8_t relay_no)
 {
 	if (toggleState[relay_no] == 1)
 	{
@@ -33,7 +33,7 @@ void relayOnOff(int relay_no)
 
 BLYNK_WRITE_DEFAULT()
 {
-	int pin = request.pin;
+	uint8_t pin = request.pin;
 	toggleState[pin] = param.asInt();
 	digitalWrite(relayPins[pin], toggleState[pin]);
 }
@@ -41,7 +41,7 @@ BLYNK_WRITE_DEFAULT()
 BLYNK_CONNECTED()
 {
 	// Request the latest state from the server
-	for (int i = 0; i < N; i++)
+	for (uint8_t i = 0; i < N; i++)
 	{
 		Blynk.syncVirtual(virtualPins[i]);
 	}
@@ -89,7 +89,7 @@ void serialSetup()
 
 void wifiSetup()
 {
-	int time = 40;
+	uint8_t time = 40;
 	WiFi.begin(WIFI_SSID, WIFI_PASS);
 	while (WiFi.status() != WL_CONNECTED)
 	{
@@ -104,7 +104,7 @@ void pinSetup()
 	irrecv.enableIRIn();
 	pinMode(WIFI_LED, OUTPUT);
 
-	for (int i = 0; i < N; i++)
+	for (uint8_t i = 0; i < N; i++)
 	{
 		pinMode(relayPins[i], OUTPUT);
 		pinMode(switchPins[i], INPUT_PULLUP);
@@ -113,7 +113,7 @@ void pinSetup()
 
 void turnOffRelays()
 {
-	for (int i = 0; i < N; i++)
+	for (uint8_t i = 0; i < N; i++)
 	{
 		digitalWrite(relayPins[i], toggleState[i]);
 	}
@@ -121,11 +121,8 @@ void turnOffRelays()
 
 void btnHandlerSetup()
 {
-	for (int i = 0; i < N; i++)
+	for (uint8_t i = 0; i < N; i++)
 	{
-		/* AceButton(uint8_t pin = 0, uint8_t defaultReleasedState = HIGH, uint8_t id = 0);*/
-		// configs[i] = new ButtonConfig;
-		// configs[i]->setEventHandler(btnHandler);
 		buttons[i] = new AceButton;
 		buttons[i]->init(switchPins[i], HIGH, i);
 		buttons[i]->setEventHandler(btnHandler);
@@ -139,15 +136,8 @@ void blynkSetup()
 	Blynk.config(AUTH);
 	delay(1000);
 
-	for (int i = 0; i < N; i++)
+	for (uint8_t i = 0; i < N; i++)
 	{
 		Blynk.virtualWrite(virtualPins[i], toggleState[i]);
 	}
 }
-
-// void readSwitchPins()
-// {
-// 	for(int i = 0; i < N; i++){
-// 		if()
-// 	}
-// }

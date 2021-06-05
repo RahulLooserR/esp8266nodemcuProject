@@ -29,29 +29,24 @@ using namespace ace_button;
 BlynkTimer timer1;
 
 /*                        */
-const int relayPins[N] = {D0, D1, D3, D8};
+const uint8_t relayPins[N] = {D0, D1, D3, D8};
 /*                                Rx, tX */
-const int switchPins[N] = {D6, D7, 3, 1};
+const uint8_t switchPins[N] = {D6, D7, 3, 1};
 
 /* remote button 0(0x11D930CF) 1 2 3 4 */
-const int remoteBtns[N] = {0x11D9D827, 0x11D9F00F, 0x11D9C03F, 0x11D99867};
-const int virtualPins[N+1] = {V0, V1, V2, V3, V4};
-int toggleState[N] = {0}; //Define integer to remember the toggle state for relay 1
+const uint8_t remoteBtns[N] = {0x11D9D827, 0x11D9F00F, 0x11D9C03F, 0x11D99867};
+const uint8_t virtualPins[N+1] = {V0, V1, V2, V3, V4};
+uint8_t toggleState[N] = {0}; //Define integer to remember the toggle state for relay 1
 
 IRrecv irrecv(IR_RECV_PIN);
 decode_results results;
 
 ButtonConfig *configs[N];
-//ButtonConfig configs[N] = {ButtonConfig(), ButtonConfig(), ButtonConfig(), ButtonConfig()};
-//AceButton button1(&config1);
 AceButton *buttons[N];
-
-
-
 
 void btnHandler(AceButton *, uint8_t, uint8_t);
 void checkBlynkStatus();
-void relayOnOff(int);
+void relayOnOff(uint8_t);
 void ir_remote();
 
 /* setup functions */
