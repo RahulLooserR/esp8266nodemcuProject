@@ -1,0 +1,16 @@
+    INPUT_PULLUP   OUTPUT(HIGH)
+D0   	x
+D1	 					
+D2		x				x
+D3	 					
+D4(led)	 					
+D5	 					
+D6	 					
+D7	 					
+D8	 	x
+RX(3)					
+TX(1)					
+A0		x				x
+S3(10)	x 				x
+S2(9)	x				x
+
