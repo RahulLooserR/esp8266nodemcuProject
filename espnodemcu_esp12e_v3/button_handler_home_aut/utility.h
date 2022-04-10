@@ -29,13 +29,13 @@ using namespace ace_button;
 BlynkTimer timer1;
 
 /*                        */
-const uint8_t relayPins[N] = {D0, D1, D3, D8};
+const uint8_t relayPins[N] = {D0, D1, D, D8};
 /*                                Rx, tX */
 const uint8_t switchPins[N] = {D6, D7, 3, 1};
 
 /* remote button 0(0x11D930CF) 1 2 3 4 */
 const uint8_t remoteBtns[N] = {0x11D9D827, 0x11D9F00F, 0x11D9C03F, 0x11D99867};
-const uint8_t virtualPins[N+1] = {V0, V1, V2, V3, V4};
+const uint8_t virtualPins[N] = {V1, V2, V3, V4};
 uint8_t toggleState[N] = {0}; //Define integer to remember the toggle state for relay 1
 
 IRrecv irrecv(IR_RECV_PIN);

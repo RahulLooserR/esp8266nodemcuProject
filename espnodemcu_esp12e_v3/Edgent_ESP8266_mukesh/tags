@@ -1,0 +1,182 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+BLYNK_CONNECTED	BlynkEdgent.h	/^BLYNK_CONNECTED()$/;"	f
+BLYNK_NO_DEFAULT_BANNER	Settings.h	77;"	d
+BLYNK_PROV_ERR_CLOUD	ConfigStore.h	8;"	d
+BLYNK_PROV_ERR_CONFIG	ConfigStore.h	6;"	d
+BLYNK_PROV_ERR_INTERNAL	ConfigStore.h	10;"	d
+BLYNK_PROV_ERR_NETWORK	ConfigStore.h	7;"	d
+BLYNK_PROV_ERR_NONE	ConfigStore.h	5;"	d
+BLYNK_PROV_ERR_TOKEN	ConfigStore.h	9;"	d
+BLYNK_WRITE	Console.h	/^BLYNK_WRITE(InternalPinDBG) {$/;"	f
+BLYNK_WRITE	OTA.h	/^BLYNK_WRITE(InternalPinOTA) {$/;"	f
+BLYNK_WRITE_DEFAULT	BlynkEdgent.h	/^BLYNK_WRITE_DEFAULT()$/;"	f
+BOARD_BUTTON_ACTIVE_LOW	Settings.h	18;"	d
+BOARD_BUTTON_ACTIVE_LOW	Settings.h	26;"	d
+BOARD_BUTTON_ACTIVE_LOW	Settings.h	39;"	d
+BOARD_BUTTON_ACTIVE_LOW	Settings.h	9;"	d
+BOARD_BUTTON_PIN	Settings.h	17;"	d
+BOARD_BUTTON_PIN	Settings.h	25;"	d
+BOARD_BUTTON_PIN	Settings.h	38;"	d
+BOARD_BUTTON_PIN	Settings.h	8;"	d
+BOARD_LED_BRIGHTNESS	Indicator.h	11;"	d
+BOARD_LED_BRIGHTNESS	Settings.h	13;"	d
+BOARD_LED_BRIGHTNESS	Settings.h	21;"	d
+BOARD_LED_BRIGHTNESS	Settings.h	32;"	d
+BOARD_LED_BRIGHTNESS	Settings.h	47;"	d
+BOARD_LED_INVERSE	Settings.h	12;"	d
+BOARD_LED_INVERSE	Settings.h	31;"	d
+BOARD_LED_INVERSE	Settings.h	46;"	d
+BOARD_LED_IS_RGB	Indicator.h	15;"	d
+BOARD_LED_PIN	Settings.h	11;"	d
+BOARD_LED_PIN	Settings.h	41;"	d
+BOARD_LED_PIN_B	Settings.h	30;"	d
+BOARD_LED_PIN_G	Settings.h	29;"	d
+BOARD_LED_PIN_R	Settings.h	28;"	d
+BOARD_LED_PIN_WS2812	Settings.h	20;"	d
+BOARD_PWM_MAX	Settings.h	59;"	d
+BUTTON_HOLD_TIME_ACTION	Settings.h	57;"	d
+BUTTON_HOLD_TIME_INDICATION	Settings.h	56;"	d
+BlynkEdgent	BlynkEdgent.h	/^Edgent BlynkEdgent;$/;"	v
+BlynkState	BlynkState.h	/^namespace BlynkState$/;"	n
+COLOR_BLACK	Indicator.h	/^    COLOR_BLACK   = RGB(0x00, 0x00, 0x00),$/;"	e	enum:Indicator::Colors
+COLOR_BLUE	Indicator.h	/^    COLOR_BLUE    = RGB(0x0D, 0x36, 0xFF),$/;"	e	enum:Indicator::Colors
+COLOR_BLYNK	Indicator.h	/^    COLOR_BLYNK   = RGB(0x2E, 0xFF, 0xB9),$/;"	e	enum:Indicator::Colors
+COLOR_MAGENTA	Indicator.h	/^    COLOR_MAGENTA = RGB(0xA7, 0x00, 0xFF),$/;"	e	enum:Indicator::Colors
+COLOR_RED	Indicator.h	/^    COLOR_RED     = RGB(0xFF, 0x10, 0x08),$/;"	e	enum:Indicator::Colors
+COLOR_WHITE	Indicator.h	/^    COLOR_WHITE   = RGB(0xFF, 0xFF, 0xE7),$/;"	e	enum:Indicator::Colors
+CONFIG_AP_URL	Settings.h	61;"	d
+CONFIG_DEFAULT_PORT	Settings.h	63;"	d
+CONFIG_DEFAULT_SERVER	Settings.h	62;"	d
+CONFIG_FLAG_STATIC_IP	ConfigStore.h	3;"	d
+CONFIG_FLAG_VALID	ConfigStore.h	2;"	d
+Colors	Indicator.h	/^  enum Colors {$/;"	g	class:Indicator
+ConfigStore	ConfigStore.h	/^struct ConfigStore {$/;"	s
+CopyString	ConfigStore.h	/^void CopyString(const String& s, T(&arr)[size]) {$/;"	f
+DEBUG_PRINT	Settings.h	80;"	d
+DEBUG_PRINT	Settings.h	82;"	d
+DIMM	Indicator.h	18;"	d
+DNS_PORT	ConfigMode.h	/^const byte DNS_PORT = 53;$/;"	v
+EEPROM_CONFIG_START	ConfigStore.h	102;"	d
+Edgent	BlynkEdgent.h	/^class Edgent {$/;"	c
+IR_RECV_PIN	BlynkEdgent.h	124;"	d
+Indicator	Indicator.h	/^  Indicator() {$/;"	f	class:Indicator
+Indicator	Indicator.h	/^class Indicator {$/;"	c
+MODE_CONFIGURING	BlynkState.h	/^  MODE_CONFIGURING,$/;"	e	enum:State
+MODE_CONNECTING_CLOUD	BlynkState.h	/^  MODE_CONNECTING_CLOUD,$/;"	e	enum:State
+MODE_CONNECTING_NET	BlynkState.h	/^  MODE_CONNECTING_NET,$/;"	e	enum:State
+MODE_ERROR	BlynkState.h	/^  MODE_ERROR,$/;"	e	enum:State
+MODE_MAX_VALUE	BlynkState.h	/^  MODE_MAX_VALUE$/;"	e	enum:State
+MODE_OTA_UPGRADE	BlynkState.h	/^  MODE_OTA_UPGRADE,$/;"	e	enum:State
+MODE_RESET_CONFIG	BlynkState.h	/^  MODE_RESET_CONFIG,$/;"	e	enum:State
+MODE_RUNNING	BlynkState.h	/^  MODE_RUNNING,$/;"	e	enum:State
+MODE_SWITCH_TO_STA	BlynkState.h	/^  MODE_SWITCH_TO_STA,$/;"	e	enum:State
+MODE_WAIT_CONFIG	BlynkState.h	/^  MODE_WAIT_CONFIG,$/;"	e	enum:State
+N	BlynkEdgent.h	125;"	d
+OTA_FATAL	OTA.h	2;"	d
+RGB	Indicator.h	19;"	d
+State	BlynkState.h	/^enum State {$/;"	g
+StateStr	BlynkState.h	/^const char* StateStr[MODE_MAX_VALUE+1] = {$/;"	v
+TO_PWM	Indicator.h	20;"	d
+USE_SSL	OTA.h	4;"	d
+USE_TICKER	Settings.h	71;"	d
+WIFI_AP_IP	Settings.h	67;"	d
+WIFI_AP_Subnet	Settings.h	68;"	d
+WIFI_CLOUD_CONNECT_TIMEOUT	Settings.h	66;"	d
+WIFI_NET_CONNECT_TIMEOUT	Settings.h	65;"	d
+app_loop	BlynkEdgent.h	/^void app_loop() {$/;"	f
+beatLED	Indicator.h	/^  uint32_t beatLED(uint32_t onColor, const T& beat) {$/;"	f	class:Indicator
+beatLED	Indicator.h	/^  uint32_t beatLED(uint32_t, const T& beat) {$/;"	f	class:Indicator
+begin	BlynkEdgent.h	/^  void begin()$/;"	f	class:Edgent
+blinker	Indicator.h	/^  Ticker blinker;$/;"	v
+blinker	Indicator.h	/^  pthread_t blinker;$/;"	v
+blynk_setup	BlynkEdgent.h	/^void blynk_setup()$/;"	f
+btn_handler	BlynkEdgent.h	/^void btn_handler()$/;"	f
+button_action	ResetButton.h	/^void button_action(void)$/;"	f
+button_change	ResetButton.h	/^void button_change(void)$/;"	f
+button_init	ResetButton.h	/^void button_init()$/;"	f
+cloudHost	ConfigStore.h	/^  char      cloudHost[34];$/;"	m	struct:ConfigStore
+cloudPort	ConfigStore.h	/^  uint16_t  cloudPort;$/;"	m	struct:ConfigStore
+cloudToken	ConfigStore.h	/^  char      cloudToken[34];$/;"	m	struct:ConfigStore
+configDefault	ConfigStore.h	/^const ConfigStore configDefault = {$/;"	v
+configStore	ConfigStore.h	/^ConfigStore configStore;$/;"	v
+config_form	ConfigMode.h	/^  const char* config_form = R"html($/;"	v
+config_init	ConfigStore.h	/^bool config_init()$/;"	f
+config_load	ConfigStore.h	/^void config_load()$/;"	f
+config_load_blnkopt	ConfigStore.h	/^static bool config_load_blnkopt()$/;"	f
+config_save	ConfigStore.h	/^bool config_save()$/;"	f
+config_set_last_error	ConfigStore.h	/^void config_set_last_error(int error) {$/;"	f
+connectSSL	OTA.h	/^WiFiClient* connectSSL(const String& host, const int port)$/;"	f
+connectTCP	OTA.h	/^WiFiClient* connectTCP(const String& host, const int port)$/;"	f
+console_init	Console.h	/^void console_init()$/;"	f
+dnsServer	ConfigMode.h	/^DNSServer dnsServer;$/;"	v
+edgentConsole	Console.h	/^BlynkConsole    edgentConsole;$/;"	v
+edgentTimer	BlynkEdgent.h	/^BlynkTimer edgentTimer;$/;"	v
+enterConfigMode	ConfigMode.h	/^void enterConfigMode()$/;"	f
+enterConnectCloud	ConfigMode.h	/^void enterConnectCloud() {$/;"	f
+enterConnectNet	ConfigMode.h	/^void enterConnectNet() {$/;"	f
+enterError	ConfigMode.h	/^void enterError() {$/;"	f
+enterOTA	OTA.h	/^void enterOTA() {$/;"	f
+enterResetConfig	ConfigStore.h	/^void enterResetConfig()$/;"	f
+enterSwitchToSTA	ConfigMode.h	/^void enterSwitchToSTA() {$/;"	f
+flag	BlynkEdgent.h	/^uint8_t flag = 0;$/;"	v
+flags	ConfigStore.h	/^  uint8_t   flags;$/;"	m	struct:ConfigStore
+g_buttonPressTime	ResetButton.h	/^volatile uint32_t g_buttonPressTime = -1;$/;"	v
+g_buttonPressed	ResetButton.h	/^volatile bool     g_buttonPressed = false;$/;"	v
+get	BlynkState.h	/^  State get()        { return state; }$/;"	f	namespace:BlynkState
+getFlag	ConfigStore.h	/^  bool getFlag(uint8_t mask) {$/;"	f	struct:ConfigStore
+getWiFiName	ConfigMode.h	/^void getWiFiName(char* buff, size_t len, bool withPrefix = true) {$/;"	f
+httpUpdater	ConfigMode.h	/^ESP8266HTTPUpdateServer httpUpdater;$/;"	v
+indicator	Indicator.h	/^Indicator indicator;$/;"	v
+indicator_counter	Indicator.h	/^  int indicator_counter = -1;$/;"	v
+indicator_init	Indicator.h	/^  void indicator_init() {$/;"	f
+indicator_init	Indicator.h	/^  void indicator_init() {}$/;"	f
+indicator_run	Indicator.h	/^  void indicator_run() {$/;"	f
+indicator_run	Indicator.h	/^  void indicator_run() {}$/;"	f
+indicator_thread	Indicator.h	/^  void* indicator_thread(void*) {$/;"	f
+init	Indicator.h	/^  void init() {$/;"	f	class:Indicator
+initLED	Indicator.h	/^  void initLED() {$/;"	f	class:Indicator
+ir_remote	BlynkEdgent.h	/^void ir_remote()$/;"	f
+is	BlynkState.h	/^  bool  is (State m) { return (state == m); }$/;"	f	namespace:BlynkState
+last_error	ConfigStore.h	/^  int       last_error;$/;"	m	struct:ConfigStore
+m_Counter	Indicator.h	/^  uint8_t m_Counter;$/;"	m	class:Indicator
+m_PrevState	Indicator.h	/^  State   m_PrevState;$/;"	m	class:Indicator
+magic	ConfigStore.h	/^  uint32_t  magic;$/;"	m	struct:ConfigStore
+overTheAirURL	OTA.h	/^String overTheAirURL;$/;"	v
+parseURL	OTA.h	/^bool parseURL(String url, String& protocol, String& host, int& port, String& uri)$/;"	f
+pinSetup	BlynkEdgent.h	/^void pinSetup()$/;"	f
+printDeviceBanner	BlynkEdgent.h	/^void printDeviceBanner()$/;"	f
+relayPins	BlynkEdgent.h	/^const uint8_t relayPins[N] = {D1, D2, D5, D6};$/;"	v
+remoteBtns	BlynkEdgent.h	/^const uint8_t remoteBtns[N] = {0xFF30CF, 0xFF18E7, 0xFF7A85, 0xFF10EF};$/;"	v
+restartMCU	ConfigMode.h	/^void restartMCU() {$/;"	f
+results	BlynkEdgent.h	/^decode_results results;$/;"	v
+rgb	Indicator.h	/^  Adafruit_NeoPixel rgb = Adafruit_NeoPixel(1, BOARD_LED_PIN_WS2812, NEO_GRB + NEO_KHZ800);$/;"	v
+run	BlynkEdgent.h	/^  void run() {$/;"	f	class:Edgent
+run	Indicator.h	/^  uint32_t run() {$/;"	f	class:Indicator
+runBlynkWithChecks	BlynkEdgent.h	/^void runBlynkWithChecks() {$/;"	f
+serialSetup	BlynkEdgent.h	/^void serialSetup()$/;"	f
+set	BlynkEdgent.h	/^void BlynkState::set(State m) {$/;"	f	class:BlynkState
+setFlag	ConfigStore.h	/^  void setFlag(uint8_t mask, bool value) {$/;"	f	struct:ConfigStore
+setLED	Indicator.h	/^  void setLED(uint32_t color) {$/;"	f	class:Indicator
+setRGB	Indicator.h	/^  void setRGB(uint32_t color) {$/;"	f	class:Indicator
+skipLED	Indicator.h	/^  uint32_t skipLED() {$/;"	f	class:Indicator
+state	BlynkState.h	/^  volatile State state = MODE_MAX_VALUE;$/;"	m	namespace:BlynkState
+staticDNS	ConfigStore.h	/^  uint32_t  staticDNS;$/;"	m	struct:ConfigStore
+staticDNS2	ConfigStore.h	/^  uint32_t  staticDNS2;$/;"	m	struct:ConfigStore
+staticGW	ConfigStore.h	/^  uint32_t  staticGW;$/;"	m	struct:ConfigStore
+staticIP	ConfigStore.h	/^  uint32_t  staticIP;$/;"	m	struct:ConfigStore
+staticMask	ConfigStore.h	/^  uint32_t  staticMask;$/;"	m	struct:ConfigStore
+switchPins	BlynkEdgent.h	/^const uint8_t switchPins[N] = {1, D3, 13, 3};$/;"	v
+toggleState	BlynkEdgent.h	/^bool toggleState[N] = {0}; \/\/Define integer to remember the toggle state for relay 1$/;"	v
+toggle_relay	BlynkEdgent.h	/^void toggle_relay(uint8_t relay_no)$/;"	f
+turnOffRelays	BlynkEdgent.h	/^void turnOffRelays()$/;"	f
+version	ConfigStore.h	/^  char      version[15];$/;"	m	struct:ConfigStore
+virtualPins	BlynkEdgent.h	/^const uint8_t virtualPins[N] = {V1, V2, V3, V4};$/;"	v
+waveLED	Indicator.h	/^  uint32_t waveLED(uint32_t colorMax, unsigned breathePeriod) {$/;"	f	class:Indicator
+waveLED	Indicator.h	/^  uint32_t waveLED(uint32_t, unsigned breathePeriod) {$/;"	f	class:Indicator
+wifiPass	ConfigStore.h	/^  char      wifiPass[64];$/;"	m	struct:ConfigStore
+wifiSSID	ConfigStore.h	/^  char      wifiSSID[34];$/;"	m	struct:ConfigStore
