@@ -1,7 +1,7 @@
 
 // Fill-in information from your Blynk Template here
-#define BLYNK_TEMPLATE_ID "TMPLiLAQSqN6"
-#define BLYNK_DEVICE_NAME "L00seR Home"
+#define BLYNK_TEMPLATE_ID "TMPLN15-s6EJ"
+#define BLYNK_DEVICE_NAME "MayankHA"
 
 #define BLYNK_FIRMWARE_VERSION        "0.1.0"
 

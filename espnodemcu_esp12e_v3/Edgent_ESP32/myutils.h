@@ -13,7 +13,7 @@ const uint8_t relayPins[N] = {32, 33, 25, 26};
 const uint8_t switchPins[N] = {19, 18, 5, 17};
 
 /* remote button 0(0x11D930CF) 1 2 3 4 */
-const uint remoteBtns[N] = {0xFF30CF, 0xFF18E7, 0xFF7A85, 0xFF10EF};
+const uint remoteBtns[N] = {0x1FEE01F, 0x1FE10EF, 0x1FE906F, 0X1FE50AF};
 const uint8_t virtualPins[N] = {V1, V2, V3, V4};
 volatile bool toggleState[N] = {0};
 bool previousState[N] = {0};
@@ -62,6 +62,8 @@ void ir_remote()
   {
     // PRINT("value: ");
     // PRINTLN(results.value, HEX);
+    Serial.print("value: ");
+    Serial.println(results.value, HEX);
     for (uint8_t i = 0; i < N; i++) {
         if (remoteBtns[i] == results.value) {
             toggle_relay(i);

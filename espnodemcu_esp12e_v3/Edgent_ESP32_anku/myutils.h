@@ -12,7 +12,7 @@ const uint8_t relayPins[N] = {21, 22, 32, 33};
 const uint8_t switchPins[N] = {12, 14, 27, 26};
 
 /* remote button 0(0x11D930CF) 1 2 3 4 */
-const uint remoteBtns[N] = {0xFF30CF, 0xFF18E7, 0xFF7A85, 0xFF10EF};
+const uint remoteBtns[N] = {0x1FEE01F, 0x1FE10EF, 0x1FE906F, 0X1FE50AF};
 const uint8_t virtualPins[N] = {V1, V2, V3, V4};
 volatile bool toggleState[N] = {0};
 bool previousState[N] = {0};
