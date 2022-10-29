@@ -1,8 +1,13 @@
+#include "stdint.h"
 /* my code and variables
  * utility functions to drive automation 
  */
-#include <IRremote.h>
-#define IR_RECV_PIN 23  
+// #include <IRremote.h>  replaced with rf switch
+// #define IR_RECV_PIN 23  
+
+#include <RCSwitch.h>
+#define RF_RECV_PIN 23
+
 #define N    3  // Number of devies
 #define FAN_PINS 3
 
@@ -13,7 +18,8 @@
 
 void toggle_relay(uint8_t relay_no);
 void sync();
-void ir_remote();
+// void ir_remote();
+void rf_remote();
 void blink_wifi_led();
 void blynk_setup();
 void serial_setup();
@@ -21,18 +27,30 @@ void pin_setup();
 void btn_handler();
 void control_fan();
 void change_fan_state(int fan_state);
+// void check_change_fanstate();
+void toggle_all(bool state);
 
 const uint8_t relayPins[N] = {21, 22, 32}; // 33};
 const uint8_t switchPins[N] = {12, 14, 27}; // 26};
 
 /* remote button 0(0x11D930CF) 1 2 3 4 */
-const uint remoteBtns[N] = {0x1FEE01F, 0x1FE10EF, 0x1FE906F}; // 0xFF10EF};
+// const uint remoteBtns[N] = {0x1FEE01F, 0x1FE10EF, 0x1FE906F}; // 0xFF10EF};
 // plus = 0x1FEC03F
 // minus = 0x1FE40BF
+
+const uint rf_remoteBtns[6] = {4087, // btn 1
+                               4091, // btn 2
+                               4093, // btn 3
+                               4094, // fan -
+                               4092, // fan +
+                               4089};// all on/off
+
+
 
 const uint8_t virtualPins[N] = {V1, V2, V3}; // V4};
 volatile bool toggleState[N] = {0};
 bool previousState[N] = {0};
+static bool toggle_all_state = false;
 
 /* controlling fan speed
  *  controll using 3 relays
@@ -49,17 +67,22 @@ enum fan_state_{
   SPEED3,
   FULLSPEED,
 };
+
 const uint8_t fanVirtualPin = V5;
 //const uint8_t fanPins[FAN_PINS] = {13, 33, 25};
 const uint8_t fanPins[FAN_PINS] = {5, 18, 0};
 volatile bool fanState[FAN_PINS] = {1, 1, 1}; 
 uint8_t fan_led = 26;
-int fan_state = OFF;
-bool fan_state_changed = false;
+static uint8_t fan_state = OFF;     // global fan state/speed
 
+static bool fan_state_changed = false;
 
-IRrecv irrecv(IR_RECV_PIN);
-decode_results results;
+// decode_results results;
+// IRrecv irrecv(IR_RECV_PIN);
+
+/* replacing IR with rf remote */
+RCSwitch mySwitch = RCSwitch();
+
 BlynkTimer timer1, timer2; 
 
 BLYNK_WRITE_DEFAULT()
@@ -67,6 +90,9 @@ BLYNK_WRITE_DEFAULT()
   uint8_t pin = request.pin;
   if(pin == fanVirtualPin) {
     change_fan_state(param.asInt());
+  } else if (pin == V4){       // toggle all
+    toggle_all(toggle_all_state);
+    toggle_all_state = !toggle_all_state;
   } else {
     toggleState[pin-1] = param.asInt();
     digitalWrite(relayPins[pin-1], toggleState[pin-1]);
@@ -91,6 +117,36 @@ void toggle_relay(uint8_t relay_no)
   digitalWrite(relayPins[relay_no], toggleState[relay_no]);
 }
 
+// void check_change_fanstate()
+// {
+//   if(prev_state != fan_state) {
+//     change_fan_state(fan_state);
+//     fan_state_changed = true;
+//     prev_state = fan_state; 
+//   }
+//   else {
+//     fan_state_changed = false;
+//   }
+// }
+
+void toggle_all(bool state)
+{
+  for (uint8_t i = 0; i < N; i++){
+    toggleState[i] = state;
+    digitalWrite(relayPins[i], toggleState[i]);    
+  }
+  // turn off fan
+  /* relay are active low so condition is reversed */
+  if(state) {
+    fan_state = OFF;
+  } else {
+    fan_state = SPEED2;    
+  }
+  fan_state_changed = true;
+  change_fan_state(fan_state);
+  // Blynk.virtualWrite(fanVirtualPin, speed);
+}
+
 void sync()
 {
   for(uint8_t i = 0; i < N; i++){ 
@@ -102,25 +158,71 @@ void sync()
   }
   if(fan_state_changed){
     Blynk.virtualWrite(fanVirtualPin, fan_state);
+    fan_state_changed = false;
   }
 }
 
-void ir_remote()
-{
-  if (irrecv.decode(&results))
-  {
-    // PRINT("value: ");
-    // PRINTLN(results.value, HEX);
+// void ir_remote()
+// {
+//   if (irrecv.decode(&results))
+//   {
+//     // PRINT("value: ");
+//     // PRINTLN(results.value, HEX);
 
-     Serial.print("value: ");
-     Serial.println(results.value, HEX);
+//      Serial.print("value: ");
+//      Serial.println(results.value, HEX);
+//     for (uint8_t i = 0; i < N; i++) {
+//         if (remoteBtns[i] == results.value) {
+//             toggle_relay(i);
+//         }
+//     }
+//     irrecv.resume();
+//   }
+// }
+
+void rf_remote()
+{
+  int received_val;
+    
+  if (mySwitch.available()) {
+    received_val= mySwitch.getReceivedValue();
+
     for (uint8_t i = 0; i < N; i++) {
-        if (remoteBtns[i] == results.value) {
+        if (rf_remoteBtns[i] == received_val) {
             toggle_relay(i);
+            delay(500);
         }
     }
-    irrecv.resume();
+
+    if (received_val == rf_remoteBtns[4]){
+      if(fan_state < FULLSPEED){
+        fan_state += 1;
+        fan_state_changed = true;
+        change_fan_state(fan_state);
+        // Blynk.virtualWrite(fanVirtualPin, remote_fan_state); 
+      } 
+    // delay(500);
+    }
+    
+    if (received_val == rf_remoteBtns[3]){
+      if (fan_state > OFF){
+        fan_state -= 1;
+        fan_state_changed = true;
+        change_fan_state(fan_state);
+        // Blynk.virtualWrite(fanVirtualPin, remote_fan_state);
+      }
+      
+      // delay(500);
+    }
+    if (received_val == rf_remoteBtns[5]){
+      toggle_all(toggle_all_state);
+      toggle_all_state = !toggle_all_state;
+      delay(500);
+    }
+    mySwitch.resetAvailable();
   }
+  
+
 }
 
 void blink_wifi_led()
@@ -147,7 +249,8 @@ void serial_setup()
 
 void pin_setup()
 {
-  irrecv.enableIRIn();
+  // irrecv.enableIRIn();
+  mySwitch.enableReceive(RF_RECV_PIN);
   pinMode(WIFI_LED, OUTPUT);
   pinMode(fan_led, OUTPUT);
   
@@ -211,50 +314,60 @@ void change_fan_state(int fan_state)
     break;
 
     default:
+      return;
     break;
   }
 
   digitalWrite(fanPins[0], fanState[0]);
   digitalWrite(fanPins[1], fanState[1]);
   digitalWrite(fanPins[2], fanState[2]);
+
+  if(fanState[0] == 1 && fanState[1] == 1 && fanState[2] == 1){
+    digitalWrite(fan_led, LOW);
+  } else {
+    digitalWrite(fan_led, HIGH);
+  }  
+
   delay(500);
 }
 
 void control_fan()
 {
   uint16_t start_val = 95;
-  uint16_t offset = 1000;
+  static uint8_t prev_pos = OFF;
+  uint8_t curr_pos = OFF;
+  // uint16_t offset = 1000;
   
-  static bool sensor_val_changed = false;
-  static int prev_state = OFF;
+  // static bool sensor_val_changed = false;
   int curr_val = analogRead(A0);
   //Serial.println(curr_val);
 
+  // if(curr_val < start_val) {
+  //   fan_state = OFF;
+  // } else if(curr_val >= start_val && curr_val < (start_val + SPEED1 * offset)) {
+  //   fan_state = SPEED1;
+  // } else if(curr_val >= (start_val + SPEED1 * offset) && curr_val < (start_val + SPEED2 * offset)) {
+  //   fan_state = SPEED2;
+  // } else if(curr_val >= (start_val + SPEED2 * offset) && curr_val < (start_val + SPEED3 * offset)) {
+  //   fan_state = SPEED3;
+  // } else {
+  //   fan_state = FULLSPEED;
+  // } 
+
   if(curr_val < start_val) {
-    fan_state = OFF;
-  } else if(curr_val >= start_val && curr_val < (start_val + SPEED1 * offset)) {
-    fan_state = SPEED1;
-  } else if(curr_val >= (start_val + SPEED1 * offset) && curr_val < (start_val + SPEED2 * offset)) {
-    fan_state = SPEED2;
-  } else if(curr_val >= (start_val + SPEED2 * offset) && curr_val < (start_val + SPEED3 * offset)) {
-    fan_state = SPEED3;
-  } else {
-    fan_state = FULLSPEED;
-  } 
+    curr_pos = OFF;
+  } else {    
+    curr_pos = map(curr_val, start_val, 4095, SPEED1, FULLSPEED + 1);
+  }
 
   // Serial.println("Fan State:" + String(fan_state));
 
-  if(prev_state != fan_state) {
-    change_fan_state(fan_state);
+  /* potentiometer is rotated */
+  if(prev_pos != curr_pos) {
+    fan_state = curr_pos;
     fan_state_changed = true;
-    prev_state = fan_state; 
+    change_fan_state(fan_state);
+    prev_pos = curr_pos; 
   }
-  else {
-    fan_state_changed = false;
-  }
-  if(fanState[0] == 1 && fanState[1] == 1 && fanState[2] == 1){
-    digitalWrite(fan_led, LOW);
-  } else {
-    digitalWrite(fan_led, HIGH);
-  }
+  // check_change_fanstate();
 }

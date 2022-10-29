@@ -23,6 +23,9 @@ pthread_t manual_control_thread;
 TaskHandle_t Task1;
 bool isConnected = false;
 
+unsigned long old_time = millis();
+unsigned long period = 5; // 5ms
+
 void manul_control_function(void *param)
 {  
   Serial.println("inside thread");
@@ -35,7 +38,8 @@ void manul_control_function(void *param)
       timer2.run();
     }
     btn_handler();
-    ir_remote();
+    // ir_remote();
+    rf_remote();
     control_fan();
     delay(1);  
   }
@@ -71,6 +75,7 @@ void setup()
 }
 
 void loop() {
+
   if(Blynk.connected()){
       isConnected = true;
       sync();
@@ -78,4 +83,6 @@ void loop() {
     isConnected = false;
   }
   BlynkEdgent.run();
+  while (millis() - old_time < period) {}
+  old_time = millis();
 }
