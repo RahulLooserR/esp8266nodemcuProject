@@ -28,11 +28,11 @@ unsigned long period = 5; // 5ms
 
 void manul_control_function(void *param)
 {  
-  Serial.println("inside thread");
-  Serial.print("thread() running on core ");
-  Serial.println(xPortGetCoreID());
-  while (true){
-    if(isConnected){
+  // Serial.println("inside thread");
+  // Serial.print("thread() running on core ");
+  // Serial.println(xPortGetCoreID());
+  while (true) {
+    if (isConnected) {
       timer1.run();
     } else {
       timer2.run();
@@ -52,18 +52,18 @@ void setup()
   setCpuFrequencyMhz(120);
   delay(500);
   
-  serial_setup();
-  Serial.println(xPortGetCoreID());
-  Serial.println(BOARD_BUTTON_PIN);
+  // serial_setup();
+  // Serial.println(xPortGetCoreID());
+  // Serial.println(BOARD_BUTTON_PIN);
   delay(2000);
   pin_setup();
   delay(100);
   BlynkEdgent.begin();
   blynk_setup();
-  Serial.println(BlynkState::get());
-  Serial.println("setup completed");
-  Serial.print("Current state: ");
-  Serial.println(BlynkState::get());
+  // Serial.println(BlynkState::get());
+  // Serial.println("setup completed");
+  // Serial.print("Current state: ");
+  // Serial.println(BlynkState::get());
   xTaskCreatePinnedToCore(
                     manul_control_function,   /* Task function. */
                     "Task1",     /* name of task. */
@@ -74,11 +74,11 @@ void setup()
                     0);     
 }
 
-void loop() {
-
+void loop()
+{
   if(Blynk.connected()){
-      isConnected = true;
-      sync();
+    isConnected = true;
+    sync();
   } else {
     isConnected = false;
   }

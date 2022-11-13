@@ -38,19 +38,19 @@ const uint8_t switchPins[N] = {12, 14, 27}; // 26};
 // plus = 0x1FEC03F
 // minus = 0x1FE40BF
 
-const uint rf_remoteBtns[6] = {4087, // btn 1
-                               4091, // btn 2
-                               4093, // btn 3
-                               4094, // fan -
-                               4092, // fan +
-                               4089};// all on/off
+const uint rf_remoteBtns[6] = {7, // btn 1
+                               11, // btn 2
+                               13, // btn 3
+                               12, // fan +
+                               14, // fan -
+                               3};// all on/off
 
 
 
 const uint8_t virtualPins[N] = {V1, V2, V3}; // V4};
 volatile bool toggleState[N] = {0};
-bool previousState[N] = {0};
-static bool toggle_all_state = false;
+static bool previousState[N] = {0};
+static bool toggle_all_state = true;   // active low, will be off initially
 
 /* controlling fan speed
  *  controll using 3 relays
@@ -69,6 +69,7 @@ enum fan_state_{
 };
 
 const uint8_t fanVirtualPin = V5;
+const uint8_t toggleAllVirtualPin = V4;
 //const uint8_t fanPins[FAN_PINS] = {13, 33, 25};
 const uint8_t fanPins[FAN_PINS] = {5, 18, 0};
 volatile bool fanState[FAN_PINS] = {1, 1, 1}; 
@@ -87,10 +88,10 @@ BlynkTimer timer1, timer2;
 
 BLYNK_WRITE_DEFAULT()
 {
-  uint8_t pin = request.pin;
-  if(pin == fanVirtualPin) {
+  int pin = request.pin;
+  if (pin == fanVirtualPin) {
     change_fan_state(param.asInt());
-  } else if (pin == V4){       // toggle all
+  } else if (pin == toggleAllVirtualPin) {       // toggle all
     toggle_all(toggle_all_state);
     toggle_all_state = !toggle_all_state;
   } else {
@@ -108,58 +109,47 @@ BLYNK_CONNECTED()
     Blynk.syncVirtual(virtualPins[i]);
   }
   Blynk.syncVirtual(fanVirtualPin);
+  Blynk.syncVirtual(toggleAllVirtualPin);
 }
 
 
 void toggle_relay(uint8_t relay_no)
 {
-  toggleState[relay_no] = (toggleState[relay_no] + 1) % 2;
+  toggleState[relay_no] = !toggleState[relay_no];
   digitalWrite(relayPins[relay_no], toggleState[relay_no]);
 }
 
-// void check_change_fanstate()
-// {
-//   if(prev_state != fan_state) {
-//     change_fan_state(fan_state);
-//     fan_state_changed = true;
-//     prev_state = fan_state; 
-//   }
-//   else {
-//     fan_state_changed = false;
-//   }
-// }
-
 void toggle_all(bool state)
 {
-  for (uint8_t i = 0; i < N; i++){
+  for (uint8_t i = 0; i < N; i++) {
     toggleState[i] = state;
     digitalWrite(relayPins[i], toggleState[i]);    
   }
   // turn off fan
   /* relay are active low so condition is reversed */
-  if(state) {
+  if (state) {
     fan_state = OFF;
   } else {
     fan_state = SPEED2;    
   }
   fan_state_changed = true;
   change_fan_state(fan_state);
-  // Blynk.virtualWrite(fanVirtualPin, speed);
 }
 
 void sync()
 {
-  for(uint8_t i = 0; i < N; i++){ 
-    if(toggleState[i] != previousState[i]){
+  for (uint8_t i = 0; i < N; i++) {
+    if (toggleState[i] != previousState[i]) {
       Blynk.virtualWrite(virtualPins[i], toggleState[i]);
       delay(50);
       previousState[i] = toggleState[i];
     } 
   }
-  if(fan_state_changed){
+  if (fan_state_changed) {
     Blynk.virtualWrite(fanVirtualPin, fan_state);
     fan_state_changed = false;
   }
+  Blynk.virtualWrite(toggleAllVirtualPin, toggle_all_state);
 }
 
 // void ir_remote()
@@ -184,45 +174,41 @@ void rf_remote()
 {
   int received_val;
     
-  if (mySwitch.available()) {
-    received_val= mySwitch.getReceivedValue();
-
-    for (uint8_t i = 0; i < N; i++) {
-        if (rf_remoteBtns[i] == received_val) {
-            toggle_relay(i);
-            delay(500);
-        }
-    }
-
-    if (received_val == rf_remoteBtns[4]){
-      if(fan_state < FULLSPEED){
-        fan_state += 1;
-        fan_state_changed = true;
-        change_fan_state(fan_state);
-        // Blynk.virtualWrite(fanVirtualPin, remote_fan_state); 
-      } 
-    // delay(500);
-    }
-    
-    if (received_val == rf_remoteBtns[3]){
-      if (fan_state > OFF){
-        fan_state -= 1;
-        fan_state_changed = true;
-        change_fan_state(fan_state);
-        // Blynk.virtualWrite(fanVirtualPin, remote_fan_state);
-      }
-      
-      // delay(500);
-    }
-    if (received_val == rf_remoteBtns[5]){
-      toggle_all(toggle_all_state);
-      toggle_all_state = !toggle_all_state;
-      delay(500);
-    }
-    mySwitch.resetAvailable();
+  if (!mySwitch.available()) {
+    return;
   }
   
+  received_val= mySwitch.getReceivedValue();
 
+  for (uint8_t i = 0; i < N; i++) {
+    if (rf_remoteBtns[i] == received_val) {
+      toggle_relay(i);
+      delay(500);
+    }
+  }
+
+  if (received_val == rf_remoteBtns[4]) {
+    if (fan_state < FULLSPEED) {
+      fan_state += 1;
+      fan_state_changed = true;
+
+      // delay of 500 is already in this function
+      change_fan_state(fan_state);
+    } 
+  }
+  else if (received_val == rf_remoteBtns[3]) {
+    if (fan_state > OFF) {
+      fan_state -= 1;
+      fan_state_changed = true;
+      change_fan_state(fan_state);
+    }      
+  }
+  else if (received_val == rf_remoteBtns[5]) {
+    toggle_all(toggle_all_state);
+    toggle_all_state = !toggle_all_state;
+    delay(500);
+  }
+  mySwitch.resetAvailable();
 }
 
 void blink_wifi_led()
@@ -234,10 +220,10 @@ void blink_wifi_led()
 
 void blynk_setup()
 { 
-   uint interval_connected = 3000;
-    uint interval_disconnected = 500;
-    timer1.setInterval(interval_connected, blink_wifi_led);
-    timer2.setInterval(interval_disconnected, blink_wifi_led);
+  uint interval_connected = 3000;
+  uint interval_disconnected = 500;
+  timer1.setInterval(interval_connected, blink_wifi_led);
+  timer2.setInterval(interval_disconnected, blink_wifi_led);
 //   blynk_setup_state = true;
 }
 
@@ -254,8 +240,7 @@ void pin_setup()
   pinMode(WIFI_LED, OUTPUT);
   pinMode(fan_led, OUTPUT);
   
-  for (uint8_t i = 0; i < N; i++)
-  {
+  for (uint8_t i = 0; i < N; i++) {
     pinMode(relayPins[i], OUTPUT);
     pinMode(switchPins[i], INPUT_PULLUP);
     digitalWrite(relayPins[i], HIGH);
@@ -268,17 +253,17 @@ void pin_setup()
 
 void btn_handler()
 {
-  for(uint8_t i = 0; i < N; i++){
-    if(digitalRead(switchPins[i]) == LOW) {
+  for (uint8_t i = 0; i < N; i++) {
+    if (digitalRead(switchPins[i]) == LOW) {
       toggle_relay(i);
-       delay(500);
+      delay(500);
     }
   }
 }
 
 void change_fan_state(int fan_state) 
 {
-  Serial.println("Fan State:" + String(fan_state));
+  // Serial.println("Fan State:" + String(fan_state));
   switch (fan_state) {
     /* all relay off 
      *  active low
@@ -322,7 +307,7 @@ void change_fan_state(int fan_state)
   digitalWrite(fanPins[1], fanState[1]);
   digitalWrite(fanPins[2], fanState[2]);
 
-  if(fanState[0] == 1 && fanState[1] == 1 && fanState[2] == 1){
+  if (fanState[0] == 1 && fanState[1] == 1 && fanState[2] == 1) {
     digitalWrite(fan_led, LOW);
   } else {
     digitalWrite(fan_led, HIGH);
@@ -354,7 +339,7 @@ void control_fan()
   //   fan_state = FULLSPEED;
   // } 
 
-  if(curr_val < start_val) {
+  if (curr_val < start_val) {
     curr_pos = OFF;
   } else {    
     curr_pos = map(curr_val, start_val, 4095, SPEED1, FULLSPEED + 1);
@@ -363,7 +348,7 @@ void control_fan()
   // Serial.println("Fan State:" + String(fan_state));
 
   /* potentiometer is rotated */
-  if(prev_pos != curr_pos) {
+  if (prev_pos != curr_pos) {
     fan_state = curr_pos;
     fan_state_changed = true;
     change_fan_state(fan_state);
